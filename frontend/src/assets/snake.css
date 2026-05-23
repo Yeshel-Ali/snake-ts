@@ -1,0 +1,668 @@
+/* =========================================
+   Snake — Gameplay Page Styles
+   ========================================= */
+
+/* ---------- Design Tokens ---------- */
+:root {
+  --bg-page:        #0d1117;
+  --bg-panel:       #161b22;
+  --bg-board:       #0a0e14;
+  --grid-line:      #1f2630;
+
+  --cell-empty:     #11161d;
+
+  --snake-1-body:   #2ea043;
+  --snake-1-head:   #46d160;
+  --snake-2-body:   #1f6feb;
+  --snake-2-head:   #58a6ff;
+
+  --food:           #f85149;
+
+  --text-primary:   #e6edf3;
+  --text-muted:     #8b949e;
+
+  --accent:         #f0b429;
+
+  --radius-sm:      4px;
+  --radius-md:      8px;
+  --radius-lg:      12px;
+
+  --shadow-soft:    0 4px 16px rgba(0, 0, 0, 0.35);
+  --shadow-glow:    0 0 8px rgba(70, 209, 96, 0.35);
+
+  --board-size:     min(88vh, 600px);
+  --board-cols:     15;
+}
+
+/* ---------- Reset ---------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* background: radial-gradient(ellipse at top, #161b22 0%, #0d1117 70%); */
+  background: var(--bg-page);
+  color: var(--text-primary);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* ---------- Page Layout ---------- */
+.game-page {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.game-header {
+  text-align: center;
+}
+
+.game-title {
+  font-size: 2rem;
+  letter-spacing: 0.4em;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-shadow: 0 0 12px rgba(46, 160, 67, 0.4);
+}
+
+.game-subtitle {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.game-layout {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ---------- Board Panel ---------- */
+.board-panel {
+  background: var(--bg-panel);
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  justify-content: center;
+}
+
+.board {
+  width: var(--board-size);
+  height: var(--board-size);
+  display: grid;
+  grid-template-columns: repeat(var(--board-cols), 1fr);
+  grid-template-rows: repeat(var(--board-cols), 1fr);
+  gap: 1px;
+  background-color: var(--grid-line);
+  padding: 1px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--grid-line);
+}
+
+/* ---------- Cells ---------- */
+.cell {
+  aspect-ratio: 1 / 1;
+  background-color: var(--cell-empty);
+  border-radius: var(--radius-sm);
+}
+
+.cell.empty {
+  background-color: var(--cell-empty);
+}
+
+/* Generic snake (fallback) */
+.cell.snake-head {
+  background-color: var(--snake-1-head);
+}
+
+.cell.snake-body {
+  background-color: var(--snake-1-body);
+}
+
+/* Snake 1 */
+.cell.snake-1-body {
+  background-color: var(--snake-1-body);
+}
+
+.cell.snake-1-head {
+  background-color: var(--snake-1-head);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Snake 2 */
+.cell.snake-2-body {
+  background-color: var(--snake-2-body);
+}
+
+.cell.snake-2-head {
+  background-color: var(--snake-2-head);
+  box-shadow: 0 0 8px rgba(88, 166, 255, 0.45);
+}
+
+/* Food */
+.cell.food {
+  background-color: var(--food);
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(248, 81, 73, 0.5);
+}
+
+/* ---------- Players Panel ---------- */
+.players-panel {
+  background: var(--bg-panel);
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.panel-title {
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--grid-line);
+}
+
+.player-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ---------- Player Card ---------- */
+.player-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--bg-board);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--grid-line);
+}
+
+.player-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.player-color--1 {
+  background-color: var(--snake-1-head);
+  box-shadow: 0 0 6px rgba(70, 209, 96, 0.5);
+}
+
+.player-color--2 {
+  background-color: var(--snake-2-head);
+  box-shadow: 0 0 6px rgba(88, 166, 255, 0.5);
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.player-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.player-status {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.status-alive {
+  color: var(--snake-1-head);
+}
+
+.status-ready {
+  color: var(--accent);
+}
+
+.status-dead {
+  color: var(--food);
+}
+
+/* ---------- Landing / Join Form ---------- */
+.join-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 32px;
+  background: var(--bg-panel);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.join-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg-board);
+  border: 1px solid var(--grid-line);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.join-input:focus {
+  border-color: var(--snake-1-head);
+}
+
+.join-input::placeholder {
+  color: var(--text-muted);
+}
+
+.join-button {
+  width: 100%;
+  padding: 12px 24px;
+  background: var(--snake-1-body);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.join-button:hover:not(:disabled) {
+  background: var(--snake-1-head);
+}
+
+.join-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ---------- Lobby ---------- */
+.lobby-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 32px;
+  background: var(--bg-panel);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.lobby-username {
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.lobby-status {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.lobby-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 90%;
+}
+
+.join-button--p2 {
+  background: var(--snake-2-body);
+}
+
+.join-button--p2:hover:not(:disabled) {
+  background: var(--snake-2-head);
+}
+
+.lobby-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+/* ---------- Nav Bar ---------- */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 40px;
+  background: var(--bg-panel);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  gap: 60px;
+}
+
+.nav-brand {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: var(--snake-1-head);
+  text-shadow: var(--shadow-glow);
+  flex-shrink: 0;
+}
+
+.nav-links-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-links-group a {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 7px 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  border-bottom: 1px solid var(--snake-1-head);
+  border-right: 1px solid var(--snake-1-head);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.nav-links-group a:hover {
+  color: var(--text-primary);
+  border-color: var(--grid-line);
+  background: var(--bg-board);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.nav-user {
+  font-size: 0.9rem;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.nav-logout {
+  padding: 7px 14px;
+  background: transparent;
+  border: 1.5px solid var(--food);
+  border-radius: var(--radius-md);
+  color: var(--food);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav-logout:hover {
+  background: var(--food);
+  color: var(--bg-page);
+}
+
+/* ---------- Form feedback ---------- */
+.form-error {
+  width: 100%;
+  padding: 8px 12px;
+  background: rgba(248, 81, 73, 0.15);
+  border: 1px solid rgba(248, 81, 73, 0.4);
+  border-radius: var(--radius-md);
+  color: var(--food);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.form-success {
+  width: 100%;
+  padding: 8px 12px;
+  background: rgba(46, 160, 67, 0.15);
+  border: 1px solid rgba(46, 160, 67, 0.4);
+  border-radius: var(--radius-md);
+  color: var(--snake-1-head);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.form-footer {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.form-footer a {
+  color: var(--snake-1-head);
+  text-decoration: none;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Profile ---------- */
+.profile-section-label {
+  width: 100%;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-bottom: -4px;
+}
+
+.join-input:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.profile-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--grid-line);
+}
+
+.profile-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.profile-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ---------- Leaderboard ---------- */
+.leaderboard-panel {
+  background: var(--bg-panel);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 24px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.leaderboard-table th {
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--grid-line);
+}
+
+.leaderboard-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--grid-line);
+  color: var(--text-primary);
+}
+
+.leaderboard-table tr:last-child td {
+  border-bottom: none;
+}
+
+.lb-rank {
+  font-weight: 700;
+  color: var(--text-muted);
+  width: 2rem;
+}
+
+.lb-gold   td { color: var(--accent); }
+.lb-silver td { color: #adb5bd; }
+.lb-bronze td { color: #cd7f32; }
+
+.lb-gold   .lb-rank { font-size: 1.1rem; }
+
+.lb-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 24px !important;
+}
+
+/* ---------- Game-over overlay ---------- */
+.board-panel {
+  position: relative;
+}
+
+.game-over-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: rgba(10, 14, 20, 0.82);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(3px);
+}
+
+.game-over-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--text-primary);
+  text-shadow: 0 0 16px rgba(70, 209, 96, 0.5);
+}
+
+.game-over-score {
+  font-size: 0.9rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.game-over-overlay .join-button {
+  width: auto;
+  padding: 10px 28px;
+}
+
+/* ---------- Score ---------- */
+.player-score {
+  font-size: 0.78rem;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 800px) {
+  .game-layout {
+    grid-template-columns: 1fr;
+  }
+
+  :root {
+    --board-size: min(90vw, 480px);
+  }
+}
+
+/* ---------- Leaderboard controls ---------- */
+.lb-controls {
+  margin-bottom: 16px;
+}
+
+.lb-search {
+  max-width: 100%;
+}
+
+.lb-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--grid-line);
+}
+
+.lb-page-btn {
+  padding: 6px 14px;
+  background: var(--bg-board);
+  border: 1px solid var(--grid-line);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.lb-page-btn:hover:not(:disabled) {
+  background: var(--bg-panel);
+  border-color: var(--snake-1-head);
+}
+
+.lb-page-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.lb-page-info {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
